@@ -545,7 +545,6 @@ function load(){try{const s=localStorage.getItem('real-v6');if(s)return JSON.par
 function save(){localStorage.setItem('real-v6',JSON.stringify(S));}
 let S=load();
 if(!S.subTheme)S.subTheme=0;
-if(!THEMES[S.theme]){S.theme='pixel';S.subTheme=0;save();}
 
 const THEMES={
   pixel:{name:'Pixel',dots:['#ffcc00','#3f22ec','#fa58a7'],
@@ -575,6 +574,7 @@ const THEMES={
 };
 
 function applyTheme(){
+  if(!THEMES[S.theme]){S.theme='pixel';S.subTheme=0;}
   document.documentElement.setAttribute('data-theme',S.theme);
   applySubTheme();
   applyCustomColors();

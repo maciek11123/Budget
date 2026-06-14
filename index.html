@@ -658,12 +658,16 @@ function renderThemeGrid(){
   const cc=S.customColors||{};
   const cpEl=document.getElementById('custom-colors');
   if(cpEl){
-    const cur=getComputedStyle(document.documentElement);
+    // get resolved colors from actual elements
+    const bodyBg=rgb2hex(getComputedStyle(document.body).backgroundColor);
+    const textColor=rgb2hex(getComputedStyle(document.body).color);
+    const accentEl=document.querySelector('.nbtn.active .nicon');
+    const accentColor=accentEl?rgb2hex(getComputedStyle(accentEl).color):'#3f22ec';
     cpEl.innerHTML=`
-      <div class="cp-row"><label>Background</label><input type="color" value="${cc.bg||rgb2hex(cur.getPropertyValue('--bg'))}" onchange="setCustomColor('bg',this.value)"></div>
-      <div class="cp-row"><label>Text</label><input type="color" value="${cc.text||rgb2hex(cur.getPropertyValue('--text-hi'))}" onchange="setCustomColor('text',this.value)"></div>
-      <div class="cp-row"><label>Accent (UI)</label><input type="color" value="${cc.accent||rgb2hex(cur.getPropertyValue('--accent'))}" onchange="setCustomColor('accent',this.value)"></div>
-      <div class="cp-row"><label>Bold colors</label><input type="color" value="${cc.bold||rgb2hex(cur.getPropertyValue('--pix-stat1')||cur.getPropertyValue('--accent'))}" onchange="setCustomColor('bold',this.value)"></div>
+      <div class="cp-row"><label>Background</label><input type="color" value="${cc.bg||bodyBg}" onchange="setCustomColor('bg',this.value)"></div>
+      <div class="cp-row"><label>Text</label><input type="color" value="${cc.text||textColor}" onchange="setCustomColor('text',this.value)"></div>
+      <div class="cp-row"><label>Accent (UI)</label><input type="color" value="${cc.accent||accentColor}" onchange="setCustomColor('accent',this.value)"></div>
+      <div class="cp-row"><label>Bold colors</label><input type="color" value="${cc.bold||accentColor}" onchange="setCustomColor('bold',this.value)"></div>
       ${cc.bg||cc.text||cc.accent||cc.bold?'<button class="bghost" style="color:var(--low);font-size:11px;padding:6px" onclick="S.customColors=null;applyTheme();renderThemeGrid();save()">Reset custom colors</button>':''}`;
   }
 }
